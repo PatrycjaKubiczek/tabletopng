@@ -3,6 +3,7 @@ import * as htmlToImage from "html-to-image";
 import "@picocss/pico";
 
 import "./TableStyle.css";
+import AddUser from "../AddUserForm/AddUserForm";
 
 function TableImage() {
   const tableRef = useRef(null);
@@ -12,7 +13,6 @@ function TableImage() {
     { id: 3, name: "Runisko", team: "test2", points: 0 },
   ]);
   const sortedUsers = users.sort((a, b) => b.points - a.points);
-  const [nameInput, setNameInput] = useState("");
 
   const downloadImage = () => {
     if(!tableRef.current) return;
@@ -24,16 +24,9 @@ function TableImage() {
     });
   };
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNameInput(e.target.value);
-  };
 
-  const handleAddUser = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newId = Math.max(...users.map((u) => u.id)) + 1;
-    const newUser = { id: newId, name: nameInput, team: 'test', points: 0 };
-    setUsers([...users, newUser]);
-    setNameInput("");
+  const handleAddUser = (newUser: { name: string; team: string; points: number }) => {
+    setUsers([...users, { ...newUser, id: users.length + 1 }]);
   };
 
   const handleDeleteUser = (userId: number) => {
@@ -55,33 +48,9 @@ function TableImage() {
   return (
     <div>
       <div style={{ padding: "10px" }}>
-        <form onSubmit={handleAddUser} style={{ padding: "10px" }}>
-          <label>
-            Dodaj użytkownika:
-            <input
-              type="text"
-              value={nameInput}
-              onChange={handleNameInputChange}
-            />
-          </label>
-          <button type="submit">Dodaj</button>
-        </form>
-        {/* <form onSubmit={handleAddPoints} style={{padding: '10px'}}>
-        <label>
-          Wybierz użytkownika:
-          <select value={selectedUser ? selectedUser.id : ''} onChange={handleSelectedUserChange}>
-            <option value="">-- Wybierz --</option>
-            {users.map(user => (
-              <option key={user.id} value={user.id}>{user.name}</option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Dodaj punkty:
-          <input type="number" value={selectedUserPoints} onChange={handleSelectedUserPointsChange} />
-        </label>
-        <button type="submit" disabled={!selectedUser}>Dodaj</button>
-      </form> */}
+
+        <AddUser onAddUser={handleAddUser} />
+
         <h5>Lista uzytkowników</h5>
         <table className="table">
           <thead>
@@ -127,7 +96,7 @@ function TableImage() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {sortedUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
               {/* dodać miejsce */}

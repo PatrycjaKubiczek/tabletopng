@@ -1,5 +1,4 @@
-import React from 'react';
-import TableImage from './TableImage';
+import TableImage from './components/TableImage/TableImage';
 import './App.css'
 
 function App() {
