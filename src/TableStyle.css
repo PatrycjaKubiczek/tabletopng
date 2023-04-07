@@ -13,11 +13,11 @@
     background-color: #f2f2f2;
   } */
   
-  .user-row {
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
+.user-row {
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
   
 /* form { 
     padding: 10px;

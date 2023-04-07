@@ -12,11 +12,10 @@ function TableImage() {
     { id: 3, name: "Runisko", team: "test2", points: 0 },
   ]);
   const sortedUsers = users.sort((a, b) => b.points - a.points);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedUserPoints, setSelectedUserPoints] = useState("");
   const [nameInput, setNameInput] = useState("");
 
   const downloadImage = () => {
+    if(!tableRef.current) return;
     htmlToImage.toPng(tableRef.current).then((dataUrl) => {
       const link = document.createElement("a");
       link.download = "table.png";
@@ -25,49 +24,24 @@ function TableImage() {
     });
   };
 
-  const handleNameInputChange = (e) => {
+  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameInput(e.target.value);
   };
 
-  const handleAddUser = (e) => {
+  const handleAddUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newId = Math.max(...users.map((u) => u.id)) + 1;
-    const newUser = { id: newId, name: nameInput, points: 0 };
+    const newUser = { id: newId, name: nameInput, team: 'test', points: 0 };
     setUsers([...users, newUser]);
     setNameInput("");
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = (userId: number) => {
     const updatedUsers = users.filter((u) => u.id !== userId);
     setUsers(updatedUsers);
   };
 
-  const handleSelectedUserChange = (e) => {
-    const userId = parseInt(e.target.value);
-    const user = users.find((u) => u.id === userId);
-    setSelectedUser(user);
-    setSelectedUserPoints("");
-  };
-
-  const handleSelectedUserPointsChange = (e) => {
-    setSelectedUserPoints(e.target.value);
-  };
-
-  const handleAddPoints = (e) => {
-    e.preventDefault();
-    const updatedUsers = users.map((u) => {
-      if (u.id === selectedUser.id) {
-        return { ...u, points: parseInt(selectedUserPoints) };
-      } else {
-        return u;
-      }
-    });
-    setUsers(updatedUsers);
-    setSelectedUser(null);
-    setSelectedUserPoints("");
-  };
-
-  const handlePointsChange = (userId, e) => {
+  const handlePointsChange = (userId: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUsers = users.map((u) => {
       if (u.id === userId) {
         return { ...u, points: parseInt(e.target.value) };
