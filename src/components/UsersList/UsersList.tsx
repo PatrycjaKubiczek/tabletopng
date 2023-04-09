@@ -1,6 +1,6 @@
 import { User } from "../AddUserForm/AddUserForm";
 
-function UsersList({ users }: { users: User[] }) {
+function UsersList({ users, tableRef }: { users: User[]; tableRef: any }) {
   // if (isLoading) {
   //   return <div>Loading...</div>;
   // }
@@ -12,7 +12,7 @@ function UsersList({ users }: { users: User[] }) {
   return (
     <>
       <h5>Finalna tabela</h5>
-      <table className="table">
+      <table className="table" ref={tableRef}>
         <thead>
           <tr>
             <th>Miejsce</th>
