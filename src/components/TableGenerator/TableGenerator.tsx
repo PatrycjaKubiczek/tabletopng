@@ -80,7 +80,7 @@ function TableGenerator() {
       />
       <hr />
 
-      <UsersList users={sortedUsers} />
+      <UsersList users={sortedUsers} tableRef={tableRef} />
       <button onClick={downloadImage}>Pobierz obrazek</button>
     </div>
   );

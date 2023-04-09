@@ -1,10 +1,10 @@
-import TableImage from "./components/TableGenerator/TableGenerator";
+import TableGenerator from "./components/TableGenerator/TableGenerator";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <TableImage />
+      <TableGenerator />
     </div>
   );
 }
