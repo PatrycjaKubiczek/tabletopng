@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "backend/db", "backend/server.js"  ]
 }

@@ -10,7 +10,38 @@ import axios from "axios";
 
 function TableGenerator() {
   const tableRef = useRef(null);
-  const [users, setUsers] = useState<User[]>([]);
+
+  const [users, setUsers] = useState([
+    {
+      _id: 1,
+      name: "Optio",
+      team: "test",
+      points: 0,
+      logo: "https://images.unsplash.com/photo-1481567758055-3e8a6e89ca58?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+    },
+    {
+      _id: 2,
+      name: "Noye",
+      team: "test3",
+      points: 0,
+      logo: "https://images.unsplash.com/photo-1481567758055-3e8a6e89ca58?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+    },
+    {
+      _id: 3,
+      name: "Runisko",
+      team: "test2",
+      points: 0,
+      logo: "https://images.unsplash.com/photo-1481567758055-3e8a6e89ca58?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+    },
+  ]);
+
+  useEffect(() => {
+    // fetch from database.db and setUsers
+    fetch("http://localhost:3001/api/users")
+      .then((res) => res.json())
+      .catch((err) => console.error(err));
+  }, []);
+
   const sortedUsers = users.slice().sort((a, b) => b.points - a.points);
 
   const fetchUsers = async () => {
