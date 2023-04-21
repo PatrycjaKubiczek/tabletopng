@@ -13,10 +13,6 @@ function UsersList({
     return <div>Loading...</div>;
   }
 
-  // if (error) {
-  //   return <div>{error.message}</div>;
-  // }
-
   return (
     <>
       <h5>Finalna tabela</h5>
@@ -26,6 +22,7 @@ function UsersList({
             <th>Miejsce</th>
             <th>Użytkownik</th>
             <th>Zespół</th>
+            <th>Logo</th>
             <th>Punkty</th>
           </tr>
         </thead>
