@@ -51,13 +51,6 @@ function AddUserForm({
       />
 
       <label htmlFor="logo">Wybierz zespół</label>
-      {/* <input
-        type="file"
-        accept=".png, .jpg, .jpeg"
-        id="logoUpload"
-        onChange={handleLogoChange}
-      /> */}
-      {/* generate a dropdown with a list of teams */}
       {teams.length === 0 && (
         <p>
           Brak zespołów w bazie :( - dodaj zespół, aby dodać użytkownika do
