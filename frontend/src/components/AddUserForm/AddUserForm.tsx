@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Team } from "../CreateTeamForm/CreateTeamForm";
 
 export type User = {
   _id: number;
@@ -8,7 +9,13 @@ export type User = {
   points: number;
 };
 
-function AddUserForm({ onAddUser }: { onAddUser: (user: User) => void }) {
+function AddUserForm({
+  onAddUser,
+  teams,
+}: {
+  onAddUser: (user: User) => void;
+  teams: Team[];
+}) {
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
   const [logo, setLogo] = useState("");
@@ -21,16 +28,16 @@ function AddUserForm({ onAddUser }: { onAddUser: (user: User) => void }) {
     setTeam("");
   };
 
-  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(selectedFile);
-      fileReader.onload = () => {
-        setLogo(fileReader.result as string);
-      };
-    }
-  };
+  // const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFile = e.target.files?.[0];
+  //   if (selectedFile) {
+  //     const fileReader = new FileReader();
+  //     fileReader.readAsDataURL(selectedFile);
+  //     fileReader.onload = () => {
+  //       setLogo(fileReader.result as string);
+  //     };
+  //   }
+  // };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -43,22 +50,29 @@ function AddUserForm({ onAddUser }: { onAddUser: (user: User) => void }) {
         required
       />
 
-      <label htmlFor="logo">Logo zespołu</label>
-      <input
-        type="file"
-        accept=".png, .jpg, .jpeg"
-        id="logoUpload"
-        onChange={handleLogoChange}
-      />
+      <label htmlFor="logo">Wybierz zespół</label>
+      {teams.length === 0 && (
+        <p>
+          Brak zespołów w bazie :( - dodaj zespół, aby dodać użytkownika do
+          zespołu
+        </p>
+      )}
+      {teams.length > 0 ? (
+        <select
+          name="team"
+          id="team"
+          value={team}
+          onChange={(event) => setTeam(event.target.value)}
+        >
+          <option value="">Wybierz zespół</option>
+          {teams.map((team) => (
+            <option key={team._id} value={team.name}>
+              {team.name}
+            </option>
+          ))}
+        </select>
+      ) : null}
 
-      <label htmlFor="team">Nazwa zespołu</label>
-      <input
-        type="text"
-        placeholder="Wpisz nazwę zespołu"
-        value={team}
-        onChange={(event) => setTeam(event.target.value)}
-        required
-      />
       <button type="submit">Dodaj użytkownika</button>
     </form>
   );

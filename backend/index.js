@@ -9,7 +9,7 @@ const cors = require("cors");
 require("./db/mongoose");
 
 // parsers
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "200mb" }));
 
 // fix cors
 app.use(cors());

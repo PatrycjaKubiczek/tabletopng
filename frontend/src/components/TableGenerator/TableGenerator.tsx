@@ -7,10 +7,12 @@ import AddUser, { User } from "../AddUserForm/AddUserForm";
 import UsersList from "../UsersList/UsersList";
 import AddUserPointsForm from "../AddUserPointsForm/AddUserPointsForm";
 import axios from "axios";
+import CreateTeamForm, { Team } from "../CreateTeamForm/CreateTeamForm";
 
 function TableGenerator() {
   const tableRef = useRef(null);
   const [users, setUsers] = useState<User[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const sortedUsers = users.slice().sort((a, b) => b.points - a.points);
 
   const fetchUsers = async () => {
@@ -19,11 +21,18 @@ function TableGenerator() {
     setUsers(users);
   };
 
+  const fetchTeams = async () => {
+    const res = await axios.get("http://localhost:3001/api/teams");
+    const teams = res.data.data;
+    setTeams(teams);
+  };
+
   // add loading before fetch data from database
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchUsers();
+    fetchTeams();
     setIsLoading(false);
   }, []);
 
@@ -34,6 +43,25 @@ function TableGenerator() {
       link.download = "table.png";
       link.href = dataUrl;
       link.click();
+    });
+
+    // add png image to database
+    const image: any = tableRef.current;
+    const imageSrc = image?.toDataURL("image/png");
+    const imageBase64 = imageSrc?.replace(/^data:image\/png;base64,/, "");
+
+    axios
+      .post("http://localhost:3001/api/teams", { imageBase64 })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
+  const handleAddTeam = (newTeam: Team) => {
+    setTeams([...teams, { ...newTeam, _id: teams.length + 1 }]);
+
+    axios.post("http://localhost:3001/api/teams", newTeam).then((res) => {
+      console.log(res);
     });
   };
 
@@ -70,8 +98,14 @@ function TableGenerator() {
 
   return (
     <div style={{ padding: "10px" }}>
+      <h1>Generator tabeli</h1>
+      <h5>Dodawanie nowego zespołu</h5>
+      <CreateTeamForm onAddTeam={handleAddTeam} />
+
+      <hr />
       <h5>Dodawanie nowego użytkownika</h5>
-      <AddUser onAddUser={handleAddUser} />
+      <AddUser onAddUser={handleAddUser} teams={teams} />
+      <hr />
 
       <h5>Lista użytkowników</h5>
       <AddUserPointsForm
