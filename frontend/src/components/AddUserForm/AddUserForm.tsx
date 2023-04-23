@@ -1,35 +1,43 @@
 import { useState } from "react";
+import { Team } from "../CreateTeamForm/CreateTeamForm";
+import "./AddUserForm.css";
 
 export type User = {
   _id: number;
   name: string;
   team: string;
-  logo: string;
   points: number;
 };
 
-function AddUserForm({ onAddUser }: { onAddUser: (user: User) => void }) {
+function AddUserForm({
+  onAddUser,
+  teams,
+}: {
+  onAddUser: (user: User) => void;
+  teams: Team[];
+}) {
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
-  const [logo, setLogo] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newUser = { name, team, points: 0, _id: Math.random(), logo };
+    const newUser = { name, team, points: 0, _id: Math.random() };
     onAddUser(newUser);
+
+    displaySnackbar(name);
     setName("");
     setTeam("");
   };
 
-  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(selectedFile);
-      fileReader.onload = () => {
-        setLogo(fileReader.result as string);
-      };
-    }
+  const displaySnackbar = (name: string) => {
+    const snackbar = document.getElementById("snackbar");
+    const snackbarText = document.getElementById("snackbar-text");
+    if (!snackbarText) return;
+    snackbarText.innerHTML = `Dodano użytkownika ${name} do bazy`;
+    snackbar?.classList.add("show");
+    setTimeout(() => {
+      snackbar?.classList.remove("show");
+    }, 3000);
   };
 
   return (
@@ -43,23 +51,35 @@ function AddUserForm({ onAddUser }: { onAddUser: (user: User) => void }) {
         required
       />
 
-      <label htmlFor="logo">Logo zespołu</label>
-      <input
-        type="file"
-        accept=".png, .jpg, .jpeg"
-        id="logoUpload"
-        onChange={handleLogoChange}
-      />
+      <label htmlFor="logo">Wybierz zespół</label>
+      {teams && teams.length === 0 && (
+        <p>
+          Brak zespołów w bazie :( - dodaj zespół, aby dodać użytkownika do
+          zespołu
+        </p>
+      )}
+      {teams && teams.length > 0 && (
+        <select
+          name="team"
+          id="team"
+          value={team}
+          onChange={(event) => setTeam(event.target.value)}
+          disabled={!teams}
+        >
+          <option value="">Wybierz zespół</option>
+          {teams.map((team) => (
+            <option key={team._id} value={team.name}>
+              {team.name}
+            </option>
+          ))}
+        </select>
+      )}
 
-      <label htmlFor="team">Nazwa zespołu</label>
-      <input
-        type="text"
-        placeholder="Wpisz nazwę zespołu"
-        value={team}
-        onChange={(event) => setTeam(event.target.value)}
-        required
-      />
       <button type="submit">Dodaj użytkownika</button>
+
+      <div className="snackbar" id="snackbar">
+        <span id="snackbar-text"></span>
+      </div>
     </form>
   );
 }

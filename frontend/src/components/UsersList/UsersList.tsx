@@ -1,11 +1,14 @@
 import { User } from "../AddUserForm/AddUserForm";
+import { Team } from "../CreateTeamForm/CreateTeamForm";
 
 function UsersList({
   users,
+  teams,
   tableRef,
   isLoading,
 }: {
   users: User[];
+  teams: Team[];
   tableRef: any;
   isLoading: boolean;
 }) {
@@ -36,7 +39,13 @@ function UsersList({
               <td>{user.name}</td>
               <td>{user.team}</td>
               <td>
-                <img src={user.logo} alt="edit" style={{ width: "50px" }} />
+                {teams.map((team) => {
+                  if (team.name === user.team) {
+                    return (
+                      <img src={team.logo} alt={team.name} key={team._id} />
+                    );
+                  }
+                })}
               </td>
               <td>{user.points}</td>
             </tr>

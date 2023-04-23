@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+mongoose.set("debug", true);
+
 const User = require("../../db/models/user");
 
 class UserActions {
@@ -10,38 +13,54 @@ class UserActions {
     try {
       user = new User({ name, team, points });
       await user.save();
+      res
+        .status(201)
+        .json({ message: "success", data: { name, team, points } });
     } catch (e) {
       res.status(422).json({ message: e.message });
     }
-
-    res.status(201).json({ message: "success", data: { name, team, points } });
   }
   async getAllUsers(req, res) {
     let doc;
     try {
       doc = await User.find({});
+      res.status(200).json({ message: "success", data: doc });
     } catch (e) {
       res.status(500).json({ message: e.message });
     }
-    res.status(200).json({ message: "success", data: doc });
   }
   async getUser(req, res) {
     const id = req.params.id;
-    const user = await User.findOne({ _id: id });
-
-    res.status(200).json({ message: "success", data: user });
+    let user;
+    try {
+      user = await User.findOne({ _id: id });
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+      res.status(200).json({ message: "success", data: user });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
   }
+
   async updateUser(req, res) {
     const id = req.params.id;
     const name = req.body.name;
     const team = req.body.team;
+
+    const { error } = updateUserSchema.validate({ name, team });
+    if (error) {
+      return res.status(422).json({ message: error.details[0].message });
+    }
+
     const user = await User.findOne({ _id: id });
 
     user.name = name;
     user.team = team;
     await user.save();
 
-    res.status(201).json({ message: "success", data: { id, name, team } });
+    res.sendStatus(201).json({ message: "success", data: { id, name, team } });
   }
   async deleteUser(req, res) {
     const id = req.params.id;
@@ -52,12 +71,16 @@ class UserActions {
   async addPointsToUser(req, res) {
     const id = req.params.id;
     const points = req.body.points;
+    //add validation
+    if (!id) {
+      return res.sendStatus(400).json({ message: "User id is required" });
+    }
     const user = await User.findOne({ _id: id });
 
     user.points = points;
     await user.save();
 
-    res.status(201).json({ message: "success", data: { id, points } });
+    res.sendStatus(201).json({ message: "success", data: { id, points } });
   }
 }
 
