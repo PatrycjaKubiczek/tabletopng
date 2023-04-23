@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Team } from "../CreateTeamForm/CreateTeamForm";
+
 import "./AddUserForm.css";
 
 export type User = {
@@ -29,6 +30,7 @@ function AddUserForm({
     setTeam("");
   };
 
+
   const displaySnackbar = (name: string) => {
     const snackbar = document.getElementById("snackbar");
     const snackbarText = document.getElementById("snackbar-text");
@@ -52,12 +54,14 @@ function AddUserForm({
       />
 
       <label htmlFor="logo">Wybierz zespół</label>
+
       {teams && teams.length === 0 && (
         <p>
           Brak zespołów w bazie :( - dodaj zespół, aby dodać użytkownika do
           zespołu
         </p>
       )}
+
       {teams && teams.length > 0 && (
         <select
           name="team"

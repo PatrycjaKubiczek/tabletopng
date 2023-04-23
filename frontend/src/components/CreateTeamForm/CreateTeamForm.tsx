@@ -12,6 +12,7 @@ function AddUserForm({ onAddTeam }: { onAddTeam: (team: Team) => void }) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const newTeam: Team = { _id: Math.floor(Math.random() * 1000), name, logo };
     onAddTeam(newTeam);
     setName("");

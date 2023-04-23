@@ -8,6 +8,7 @@ import UsersList from "../UsersList/UsersList";
 import AddUserPointsForm from "../AddUserPointsForm/AddUserPointsForm";
 import axios from "axios";
 import CreateTeamForm, { Team } from "../CreateTeamForm/CreateTeamForm";
+
 import TeamsList from "../TeamsList/TeamsList";
 
 function TableGenerator() {
@@ -98,6 +99,7 @@ function TableGenerator() {
   };
 
   return (
+
     <div style={{ padding: "10px 30px", backgroundColor: "#0b161e" }}>
       <h1>Generator tabeli</h1>
       <article>
@@ -118,6 +120,7 @@ function TableGenerator() {
           onDeleteUser={handleDeleteUser}
         />
       </article>
+
 
       <TeamsList teams={teams} isLoading={isLoading} />
       <UsersList
