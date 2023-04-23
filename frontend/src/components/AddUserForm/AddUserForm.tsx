@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Team } from "../CreateTeamForm/CreateTeamForm";
 
+import "./AddUserForm.css";
+
 export type User = {
   _id: number;
   name: string;
   team: string;
-  logo: string;
   points: number;
 };
 
@@ -18,26 +19,28 @@ function AddUserForm({
 }) {
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
-  const [logo, setLogo] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newUser = { name, team, points: 0, _id: Math.random(), logo };
+    const newUser = { name, team, points: 0, _id: Math.random() };
     onAddUser(newUser);
+
+    displaySnackbar(name);
     setName("");
     setTeam("");
   };
 
-  // const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = e.target.files?.[0];
-  //   if (selectedFile) {
-  //     const fileReader = new FileReader();
-  //     fileReader.readAsDataURL(selectedFile);
-  //     fileReader.onload = () => {
-  //       setLogo(fileReader.result as string);
-  //     };
-  //   }
-  // };
+
+  const displaySnackbar = (name: string) => {
+    const snackbar = document.getElementById("snackbar");
+    const snackbarText = document.getElementById("snackbar-text");
+    if (!snackbarText) return;
+    snackbarText.innerHTML = `Dodano użytkownika ${name} do bazy`;
+    snackbar?.classList.add("show");
+    setTimeout(() => {
+      snackbar?.classList.remove("show");
+    }, 3000);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -51,18 +54,21 @@ function AddUserForm({
       />
 
       <label htmlFor="logo">Wybierz zespół</label>
-      {teams.length === 0 && (
+
+      {teams && teams.length === 0 && (
         <p>
           Brak zespołów w bazie :( - dodaj zespół, aby dodać użytkownika do
           zespołu
         </p>
       )}
-      {teams.length > 0 ? (
+
+      {teams && teams.length > 0 && (
         <select
           name="team"
           id="team"
           value={team}
           onChange={(event) => setTeam(event.target.value)}
+          disabled={!teams}
         >
           <option value="">Wybierz zespół</option>
           {teams.map((team) => (
@@ -71,9 +77,13 @@ function AddUserForm({
             </option>
           ))}
         </select>
-      ) : null}
+      )}
 
       <button type="submit">Dodaj użytkownika</button>
+
+      <div className="snackbar" id="snackbar">
+        <span id="snackbar-text"></span>
+      </div>
     </form>
   );
 }

@@ -9,6 +9,8 @@ import AddUserPointsForm from "../AddUserPointsForm/AddUserPointsForm";
 import axios from "axios";
 import CreateTeamForm, { Team } from "../CreateTeamForm/CreateTeamForm";
 
+import TeamsList from "../TeamsList/TeamsList";
+
 function TableGenerator() {
   const tableRef = useRef(null);
   const [users, setUsers] = useState<User[]>([]);
@@ -97,29 +99,37 @@ function TableGenerator() {
   };
 
   return (
-    <div style={{ padding: "10px" }}>
+
+    <div style={{ padding: "10px 30px", backgroundColor: "#0b161e" }}>
       <h1>Generator tabeli</h1>
-      <h5>Dodawanie nowego zespołu</h5>
-      <CreateTeamForm onAddTeam={handleAddTeam} />
+      <article>
+        <h5>Dodawanie nowego zespołu</h5>
+        <CreateTeamForm onAddTeam={handleAddTeam} />
+      </article>
 
-      <hr />
-      <h5>Dodawanie nowego użytkownika</h5>
-      <AddUser onAddUser={handleAddUser} teams={teams} />
-      <hr />
+      <article>
+        <h5>Dodawanie nowego użytkownika</h5>
+        <AddUser onAddUser={handleAddUser} teams={teams} />
+      </article>
 
-      <h5>Lista użytkowników</h5>
-      <AddUserPointsForm
-        users={users}
-        onAddUserPoints={handlePointsChange}
-        onDeleteUser={handleDeleteUser}
-      />
-      <hr />
+      <article>
+        <h5>Lista użytkowników</h5>
+        <AddUserPointsForm
+          users={users}
+          onAddUserPoints={handlePointsChange}
+          onDeleteUser={handleDeleteUser}
+        />
+      </article>
 
+
+      <TeamsList teams={teams} isLoading={isLoading} />
       <UsersList
         users={sortedUsers}
-        tableRef={tableRef}
+        teams={teams}
         isLoading={isLoading}
+        tableRef={tableRef}
       />
+
       <button onClick={downloadImage}>Pobierz obrazek</button>
     </div>
   );

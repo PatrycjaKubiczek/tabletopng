@@ -17,7 +17,6 @@ export default function AddUserPointsForm({
       <table className="table">
         <thead>
           <tr>
-            <th>Id</th>
             <th>Użytkownik</th>
             <th>Zespół</th>
             <th>Punkty</th>
@@ -26,7 +25,6 @@ export default function AddUserPointsForm({
         <tbody>
           {users.map((user: User) => (
             <tr key={user._id}>
-              <td>{user._id}</td>
               <td>{user.name}</td>
               <td>{user.team}</td>
               <td>

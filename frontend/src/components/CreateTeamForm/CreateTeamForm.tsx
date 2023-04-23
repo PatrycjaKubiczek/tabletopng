@@ -12,10 +12,13 @@ function AddUserForm({ onAddTeam }: { onAddTeam: (team: Team) => void }) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newTeam: Team = { _id: Math.random() * 1000, name, logo };
+
+    const newTeam: Team = { _id: Math.floor(Math.random() * 1000), name, logo };
     onAddTeam(newTeam);
     setName("");
     setLogo("");
+    const input = document.getElementById("logoUpload") as HTMLInputElement;
+    input.value = "";
   };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
