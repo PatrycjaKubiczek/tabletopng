@@ -49,6 +49,7 @@ function AddUserForm({ onAddTeam }: { onAddTeam: (team: Team) => void }) {
         accept=".png, .jpg, .jpeg"
         id="logoUpload"
         onChange={handleLogoChange}
+        required
       />
 
       <button type="submit">Dodaj zespół</button>

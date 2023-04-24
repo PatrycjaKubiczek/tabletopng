@@ -60,7 +60,7 @@ class UserActions {
     user.team = team;
     await user.save();
 
-    res.sendStatus(201).json({ message: "success", data: { id, name, team } });
+    res.status(201).json({ message: "success", data: { id, name, team } });
   }
   async deleteUser(req, res) {
     const id = req.params.id;
