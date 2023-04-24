@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Team } from "../CreateTeamForm/CreateTeamForm";
-
 import "./AddUserForm.css";
 
 export type User = {
@@ -29,7 +28,6 @@ function AddUserForm({
     setName("");
     setTeam("");
   };
-
 
   const displaySnackbar = (name: string) => {
     const snackbar = document.getElementById("snackbar");
@@ -69,6 +67,7 @@ function AddUserForm({
           value={team}
           onChange={(event) => setTeam(event.target.value)}
           disabled={!teams}
+          required
         >
           <option value="">Wybierz zespół</option>
           {teams.map((team) => (
@@ -80,10 +79,6 @@ function AddUserForm({
       )}
 
       <button type="submit">Dodaj użytkownika</button>
-
-      <div className="snackbar" id="snackbar">
-        <span id="snackbar-text"></span>
-      </div>
     </form>
   );
 }

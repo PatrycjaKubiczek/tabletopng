@@ -10,12 +10,18 @@ import axios from "axios";
 import CreateTeamForm, { Team } from "../CreateTeamForm/CreateTeamForm";
 
 import TeamsList from "../TeamsList/TeamsList";
+import Snackbar from "../Snackbar/Snackbar";
 
 function TableGenerator() {
   const tableRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [users, setUsers] = useState<User[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const sortedUsers = users.slice().sort((a, b) => b.points - a.points);
+
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const fetchUsers = async () => {
     const res = await axios.get("http://localhost:3001/api/users");
@@ -29,14 +35,19 @@ function TableGenerator() {
     setTeams(teams);
   };
 
-  // add loading before fetch data from database
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     fetchUsers();
     fetchTeams();
     setIsLoading(false);
   }, []);
+
+  const handleSnackbar = (message: string) => {
+    setSnackbarVisible(true);
+    setSnackbarMessage(message);
+    setTimeout(() => {
+      setSnackbarVisible(false);
+    }, 3000);
+  };
 
   const downloadImage = () => {
     if (!tableRef.current) return;
@@ -63,7 +74,7 @@ function TableGenerator() {
     setTeams([...teams, { ...newTeam, _id: teams.length + 1 }]);
 
     axios.post("http://localhost:3001/api/teams", newTeam).then((res) => {
-      console.log(res);
+      handleSnackbar(`Dodano zespół ${newTeam.name}`);
     });
   };
 
@@ -71,13 +82,13 @@ function TableGenerator() {
     setUsers([...users, { ...newUser, _id: users.length + 1 }]);
 
     axios.post("http://localhost:3001/api/users", newUser).then((res) => {
-      console.log(res);
+      handleSnackbar(`Dodano użytkownika ${newUser.name}`);
     });
   };
 
   const handleDeleteUser = (userId: number) => {
     axios.delete(`http://localhost:3001/api/users/${userId}`).then((res) => {
-      console.log(res);
+      handleSnackbar(`Usunięto użytkownika!`);
     });
 
     const updatedUsers = users.filter((u) => u._id !== userId);
@@ -90,6 +101,12 @@ function TableGenerator() {
   ) => {
     const updatedUsers = users.map((u) => {
       if (u._id === userId) {
+        if (e.target.value === "") {
+          return { ...u, points: 0 };
+        }
+        if (e.target.value === "-") {
+          return { ...u, points: 0 };
+        }
         return { ...u, points: parseInt(e.target.value) };
       } else {
         return u;
@@ -99,7 +116,6 @@ function TableGenerator() {
   };
 
   return (
-
     <div style={{ padding: "10px 30px", backgroundColor: "#0b161e" }}>
       <h1>Generator tabeli</h1>
       <article>
@@ -121,8 +137,7 @@ function TableGenerator() {
         />
       </article>
 
-
-      <TeamsList teams={teams} isLoading={isLoading} />
+      <TeamsList teams={teams} isLoading={isLoading} users={users} />
       <UsersList
         users={sortedUsers}
         teams={teams}
@@ -131,6 +146,7 @@ function TableGenerator() {
       />
 
       <button onClick={downloadImage}>Pobierz obrazek</button>
+      {snackbarVisible && <Snackbar message={snackbarMessage} />}
     </div>
   );
 }
