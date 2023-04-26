@@ -4,7 +4,6 @@ import * as htmlToImage from "html-to-image";
 import axios from "axios";
 //styles
 import "@picocss/pico";
-import "./App.css";
 
 //types
 import { User } from "./components/CreateUserForm/CreateUserForm";
