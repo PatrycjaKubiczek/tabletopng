@@ -6,7 +6,7 @@ export type Team = {
   logo: string;
 };
 
-function AddUserForm({ onAddTeam }: { onAddTeam: (team: Team) => void }) {
+function CreateUserForm({ onAddTeam }: { onAddTeam: (team: Team) => void }) {
   const [name, setName] = useState("");
   const [logo, setLogo] = useState("");
 
@@ -57,4 +57,4 @@ function AddUserForm({ onAddTeam }: { onAddTeam: (team: Team) => void }) {
   );
 }
 
-export default AddUserForm;
+export default CreateUserForm;

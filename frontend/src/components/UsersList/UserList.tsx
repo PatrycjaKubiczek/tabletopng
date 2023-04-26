@@ -1,15 +1,10 @@
-import { User } from "../AddUserForm/AddUserForm";
+import { User } from "../CreateUserForm/CreateUserForm";
 
-export default function AddUserPointsForm({
+export default function UsersList({
   users,
-  onAddUserPoints,
   onDeleteUser,
 }: {
   users: User[];
-  onAddUserPoints: (
-    _id: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
   onDeleteUser: (_id: number) => void;
 }) {
   return (
@@ -20,6 +15,7 @@ export default function AddUserPointsForm({
             <th>Użytkownik</th>
             <th>Zespół</th>
             <th>Punkty</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -27,13 +23,7 @@ export default function AddUserPointsForm({
             <tr key={user._id}>
               <td>{user.name}</td>
               <td>{user.team}</td>
-              <td>
-                <input
-                  type="number"
-                  value={user.points}
-                  onChange={(e) => onAddUserPoints(user._id, e)}
-                />
-              </td>
+              <td>{user.points}</td>
               <td>
                 <button onClick={() => onDeleteUser(user._id)}>Usuń</button>
               </td>
