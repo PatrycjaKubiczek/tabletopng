@@ -5,10 +5,12 @@ function UsersList({
   teams,
   users,
   isLoading,
+  onDeleteTeam,
 }: {
   teams: Team[];
   users: User[];
   isLoading: boolean;
+  onDeleteTeam: (_id: number) => void;
 }) {
   const sumTeamPoints = (team: Team) => {
     const sum = users.reduce((acc, user) => {
@@ -50,6 +52,9 @@ function UsersList({
                 <img src={team.logo} alt={team.name} />
               </td>
               <td>{team.points}</td>
+              <td>
+                <button onClick={() => onDeleteTeam(team._id)}>Usuń</button>
+              </td>
             </tr>
           ))}
         </tbody>

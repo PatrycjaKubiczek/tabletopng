@@ -1,15 +1,10 @@
 import { User } from "../CreateUserForm/CreateUserForm";
 
-export default function AddUserPointsForm({
+export default function UsersList({
   users,
-  onAddUserPoints,
   onDeleteUser,
 }: {
   users: User[];
-  onAddUserPoints: (
-    _id: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
   onDeleteUser: (_id: number) => void;
 }) {
   return (

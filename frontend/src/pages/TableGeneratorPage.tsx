@@ -1,6 +1,6 @@
 import { Team } from "../components/CreateTeamForm/CreateTeamForm";
 import { User } from "../components/CreateUserForm/CreateUserForm";
-import UsersList from "../components/UsersList/UsersList";
+import TableGenerator from "../components/TableGenerator/TableGenerator";
 
 type TableGeneratorPageProps = {
   users: User[];
@@ -21,7 +21,7 @@ const TableGeneratorPage = ({
     <>
       <h5>Finalna tabela - podgląd</h5>
       <article>
-        <UsersList
+        <TableGenerator
           users={users}
           teams={teams}
           tableRef={tableRef}

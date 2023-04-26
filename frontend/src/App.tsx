@@ -15,10 +15,11 @@ import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import UsersPage from "./pages/UsersPage";
 import TeamsPage from "./pages/TeamsPage";
+import ScoresPage from "./pages/ScoresPage";
 import TableGeneratorPage from "./pages/TableGeneratorPage";
 import NoPage from "./pages/NoPage";
 
-import ScoreForm, { Score } from "./components/ScoreForm/ScoreForm";
+import { Score } from "./components/ScoreForm/ScoreForm";
 import Snackbar from "./components/Snackbar/Snackbar";
 
 function App() {
@@ -74,6 +75,15 @@ function App() {
     axios.post("http://localhost:3001/api/teams", newTeam).then((res) => {
       handleSnackbar(`Dodano zespół ${newTeam.name}`);
     });
+  };
+
+  const handleDeleteTeam = (teamId: number) => {
+    // allow to delete only teams without users
+    // axios.delete(`http://localhost:3001/api/teams/${teamId}`).then((res) => {
+    //   handleSnackbar(`Usunięto zespół!`);
+    // });
+    // const updatedTeams = teams.filter((t) => t._id !== teamId);
+    // setTeams(updatedTeams);
   };
 
   const handleCreateUser = (newUser: User) => {
@@ -150,6 +160,7 @@ function App() {
               element={
                 <TeamsPage
                   onAddTeam={handleAddTeam}
+                  onDeleteTeam={handleDeleteTeam}
                   teams={teams}
                   users={sortedUsers}
                   isLoading={isLoading}
@@ -169,23 +180,16 @@ function App() {
                 />
               }
             />
+            <Route
+              path="scores"
+              element={<ScoresPage users={users} submitScore={submitScore} />}
+            />
 
-            {/* <Route path="*" element={<NoPage />} /> */}
+            <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
 
-      {/* <ScoreForm users={users} onSubmitScore={submitScore} /> */}
-      {/* //   <article>
-    //     <h5>Lista użytkowników</h5>
-    //     <AddUserPointsForm
-    //       users={users}
-    //       onAddUserPoints={handlePointsChange}
-    //       onDeleteUser={handleDeleteUser}
-    //     />
-    //   </article> */}
-
-      {/* <button onClick={downloadImage}>Pobierz obrazek</button> */}
       {snackbarVisible && <Snackbar message={snackbarMessage} />}
     </div>
   );

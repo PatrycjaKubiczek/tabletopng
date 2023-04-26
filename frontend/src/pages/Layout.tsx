@@ -15,6 +15,9 @@ const Layout = () => {
             <Link to="/teams">Zespoły</Link>
           </li>
           <li>
+            <Link to="/scores">Wyniki</Link>
+          </li>
+          <li>
             <Link to="/table">Generator tabel</Link>
           </li>
         </ul>

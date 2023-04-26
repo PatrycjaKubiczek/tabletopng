@@ -6,22 +6,35 @@ import TeamsList from "../components/TeamsList/TeamsList";
 
 type TeamsPageProps = {
   onAddTeam: (team: Team) => void;
+  onDeleteTeam: (_id: number) => void;
   teams: Team[];
   users: User[];
   tableRef: any;
   isLoading: boolean;
 };
 
-function TeamsPage({ onAddTeam, teams, users, isLoading }: TeamsPageProps) {
+function TeamsPage({
+  onAddTeam,
+  onDeleteTeam,
+  teams,
+  users,
+  isLoading,
+}: TeamsPageProps) {
   return (
     <>
+      <h5>Zespoły</h5>
       <article>
-        <h5>Dodawanie nowego użytkownika</h5>
+        <h5>Dodawanie nowego zespołu</h5>
         <CreateTeamForm onAddTeam={onAddTeam} />
       </article>
       <article>
         <h5>Lista zespołów</h5>
-        <TeamsList teams={teams} isLoading={isLoading} users={users} />
+        <TeamsList
+          teams={teams}
+          isLoading={isLoading}
+          users={users}
+          onDeleteTeam={() => {}}
+        />
       </article>
     </>
   );
