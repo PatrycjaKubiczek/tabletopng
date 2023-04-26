@@ -1,4 +1,4 @@
-import { User } from "../AddUserForm/AddUserForm";
+import { User } from "../CreateUserForm/CreateUserForm";
 import { Team } from "../CreateTeamForm/CreateTeamForm";
 
 function UsersList({

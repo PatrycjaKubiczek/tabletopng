@@ -1,4 +1,4 @@
-import { User } from "../AddUserForm/AddUserForm";
+import { User } from "../CreateUserForm/CreateUserForm";
 import { Team } from "../CreateTeamForm/CreateTeamForm";
 
 function UsersList({
@@ -18,7 +18,6 @@ function UsersList({
 
   return (
     <>
-      <h5>Finalna tabela</h5>
       <table className="table" ref={tableRef}>
         <thead>
           <tr>

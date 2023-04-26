@@ -3,7 +3,7 @@ import * as htmlToImage from "html-to-image";
 import "@picocss/pico";
 import "./TableStyle.css";
 
-import AddUser, { User } from "../AddUserForm/AddUserForm";
+import CreateUserForm, { User } from "../CreateUserForm/CreateUserForm";
 import UsersList from "../UsersList/UsersList";
 import AddUserPointsForm from "../AddUserPointsForm/AddUserPointsForm";
 import axios from "axios";
@@ -78,7 +78,7 @@ function TableGenerator() {
     });
   };
 
-  const handleAddUser = (newUser: User) => {
+  const handleCreateUser = (newUser: User) => {
     setUsers([...users, { ...newUser, _id: users.length + 1 }]);
 
     axios.post("http://localhost:3001/api/users", newUser).then((res) => {
@@ -125,7 +125,7 @@ function TableGenerator() {
 
       <article>
         <h5>Dodawanie nowego użytkownika</h5>
-        <AddUser onAddUser={handleAddUser} teams={teams} />
+        <CreateUserForm onCreateUser={handleCreateUser} teams={teams} />
       </article>
 
       <article>

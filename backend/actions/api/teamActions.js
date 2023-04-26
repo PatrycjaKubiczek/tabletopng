@@ -86,17 +86,6 @@ class TeamActions {
 
     res.sendStatus(204);
   }
-
-  //   async addPointsToTeam(req, res) {
-  //     const id = req.params.id;
-  //     const points = req.body.points;
-  //     const team = await Team.findOne({ _id: id });
-
-  //     team.points = points;
-  //     await team.save();
-
-  //     res.sendStatus(201).json({ message: "success", data: { id, points } });
-  //   }
 }
 
 module.exports = new TeamActions();
